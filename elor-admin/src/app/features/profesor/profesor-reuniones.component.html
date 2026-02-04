@@ -1,0 +1,61 @@
+<div class="container mt-4">
+
+  <!-- SELECTOR DE IDIOMA -->
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-sm btn-outline-primary me-2" (click)="cambiarIdioma('es')">ES</button>
+    <button class="btn btn-sm btn-outline-primary me-2" (click)="cambiarIdioma('eu')">EU</button>
+    <button class="btn btn-sm btn-outline-primary" (click)="cambiarIdioma('en')">EN</button>
+  </div>
+
+  <h2>{{ t('misReuniones') }}</h2>
+
+  <!-- LISTADO DE REUNIONES -->
+  <div *ngIf="cargando">{{ t('cargando') }}</div>
+
+  <div *ngIf="!cargando">
+    <app-mini-reuniones [datos]="reuniones"></app-mini-reuniones>
+  </div>
+
+  <!-- FORMULARIO PARA CREAR REUNIÓN -->
+  <h2>{{ t('crearNueva') }}</h2>
+
+  <div class="card p-3 mb-4">
+    <h4>{{ t('nuevaReunion') }}</h4>
+
+    <form (ngSubmit)="crearReunion()">
+
+      <label class="mt-2">{{ t('alumno') }}</label>
+      <input type="number" class="form-control" [(ngModel)]="form.alumno_id" name="alumno_id" required>
+
+      <label class="mt-2">{{ t('fecha') }}</label>
+      <input type="date" class="form-control" [(ngModel)]="form.fecha" name="fecha" required>
+
+      <label class="mt-2">{{ t('hora') }}</label>
+      <input type="time" class="form-control" [(ngModel)]="form.hora" name="hora" required>
+
+      <label class="mt-2">{{ t('centro') }}</label>
+      <input type="text" class="form-control" [(ngModel)]="form.id_centro" name="id_centro" placeholder="15112">
+
+      <label class="mt-2">{{ t('titulo') }}</label>
+      <input type="text" class="form-control" [(ngModel)]="form.titulo" name="titulo">
+
+      <label class="mt-2">{{ t('asunto') }}</label>
+      <textarea class="form-control" [(ngModel)]="form.asunto" name="asunto"></textarea>
+
+      <label class="mt-2">{{ t('aula') }}</label>
+      <input type="text" class="form-control" [(ngModel)]="form.aula" name="aula">
+
+      <!-- NUEVO: ESTADO -->
+      <label class="mt-2">Estado</label>
+      <select class="form-control" [(ngModel)]="form.estado" name="estado" required>
+        <option value="pendiente">Pendiente</option>
+        <option value="aceptada">Aceptada</option>
+        <option value="conflicto">Conflicto</option>
+      </select>
+
+      <button class="btn btn-primary mt-3">{{ t('crear') }}</button>
+
+    </form>
+
+  </div>
+</div>

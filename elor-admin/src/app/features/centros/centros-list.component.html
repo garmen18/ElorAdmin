@@ -1,0 +1,101 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Centros</h2>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label for="dtituc" class="form-label">Tipo titularidad</label>
+      <select
+        id="dtituc"
+        class="form-select"
+        [(ngModel)]="filtros.dtituc"
+        (ngModelChange)="onTitulacionChange()"
+      >
+        <option *ngFor="let o of dtitucOptions" [value]="o">{{ o }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="dterre" class="form-label">Territorio</label>
+      <select
+        id="dterre"
+        class="form-select"
+        [(ngModel)]="filtros.dterre"
+        (ngModelChange)="onTerritorioChange()"
+      >
+        <option *ngFor="let o of dterreOptions" [value]="o">{{ o }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="dmunic" class="form-label">Municipio</label>
+      <select
+        id="dmunic"
+        class="form-select"
+        [(ngModel)]="filtros.dmunic"
+        (ngModelChange)="onMunicipioChange()"
+      >
+        <option *ngFor="let o of dmunicOptions" [value]="o">{{ o }}</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label for="buscar" class="form-label">Buscar</label>
+      <input
+        id="buscar"
+        class="form-control"
+        [(ngModel)]="filtros.q"
+        (keyup.enter)="cargar(1)"
+        placeholder="Nombre o municipio"
+      >
+    </div>
+  </div>
+
+  <div class="mb-2">
+    <strong>Total centros:</strong> {{ total }}
+  </div>
+
+  <div *ngIf="cargando" class="alert alert-info">Cargando...</div>
+
+  <div *ngIf="!cargando" class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Municipio</th>
+          <th>Tipo</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of items">
+          <td>{{ c.ccen }}</td>
+          <td>{{ c.nombre }}</td>
+          <td>{{ c.dmunic }}</td>
+          <td>{{ c.dtituc }}</td>
+          <td class="text-center">
+            <a [routerLink]="['/centros', c.ccen]" class="btn btn-sm btn-outline-primary">
+              Ver Detalles
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <nav *ngIf="total > pageSize" class="d-flex justify-content-center mt-3">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="page === 1">
+        <a class="page-link" (click)="cargar(page - 1)">Anterior</a>
+      </li>
+
+      <li class="page-item disabled">
+        <span class="page-link">Página {{ page }} / {{ totalPages }}</span>
+      </li>
+
+      <li class="page-item" [class.disabled]="page >= totalPages">
+        <a class="page-link" (click)="cargar(page + 1)">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
+</div>

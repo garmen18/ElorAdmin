@@ -1,0 +1,27 @@
+<div class="container py-4">
+
+  <h2>Panel de Administración</h2>
+  <p>Selecciona una opción para gestionar usuarios:</p>
+
+  <div class="list-group">
+
+    <!-- Profesores -->
+    <a routerLink="/god/profesores" class="list-group-item list-group-item-action">
+      Gestionar Profesores
+    </a>
+
+    <!-- Alumnos -->
+    <a routerLink="/god/alumnos" class="list-group-item list-group-item-action">
+      Gestionar Alumnos
+    </a>
+
+    <!-- Administradores (solo si es GOD) -->
+    <a *ngIf="auth.getTipo() === 1"
+       routerLink="/god/admins"
+       class="list-group-item list-group-item-action">
+      Gestionar Administradores
+    </a>
+
+  </div>
+
+</div>

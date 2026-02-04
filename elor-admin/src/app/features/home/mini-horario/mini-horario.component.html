@@ -1,0 +1,27 @@
+<ng-container *ngIf="filas.length > 0; else noDatos">
+  <div class="card p-3">
+    <table class="table table-sm mb-0">
+      <thead>
+        <tr>
+          <th>Día</th>
+          <th>Hora</th>
+          <th>Módulo</th>
+          <th>Aula</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let h of filas">
+          <td>{{ h.dia }}</td>
+          <td>{{ h.hora }}</td>
+          <td>{{ h.modulo }}</td>
+          <td>{{ h.aula || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+
+<ng-template #noDatos>
+  <p class="text-muted">No hay datos de horario.</p>
+</ng-template>

@@ -1,0 +1,24 @@
+<div *ngIf="cargando" class="text-center mt-4">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="mt-2">Cargando centro...</p>
+  
+</div>
+
+<div *ngIf="!cargando && centro" class="container mt-4">
+
+  <h2 class="mb-3">{{ centro.nombre }}</h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <p class="mb-1"><strong>Dirección:</strong> {{ centro.domicilio }} ({{ centro.cp }})</p>
+      <p class="mb-1"><strong>Municipio:</strong> {{ centro.dmunic }}</p>
+      <p class="mb-1"><strong>Territorio:</strong> {{ centro.dterr }}</p>
+      <p class="mb-1"><strong>Titularidad:</strong> {{ centro.dtituc }}</p>
+      <p class="mb-0"><strong>Código:</strong> {{ centro.ccen }}</p>
+    </div>
+  </div>
+
+  <h4 class="mb-3">Ubicación</h4>
+  <div id="map" class="rounded shadow-sm" style="width: 100%; height: 350px;"></div>
+
+</div>

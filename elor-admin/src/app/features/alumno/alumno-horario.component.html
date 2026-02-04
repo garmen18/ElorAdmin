@@ -1,0 +1,49 @@
+<div class="container py-4">
+
+  <h2 class="mb-4">Mi horario completo</h2>
+
+  <table class="table table-bordered text-center align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th style="width: 80px;">Hora</th>
+        <th *ngFor="let d of dias">{{ d }}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let h of horas">
+        <td class="fw-bold">{{ h }}</td>
+
+        <td *ngFor="let d of dias">
+
+          <!-- Si hay clase o reunión -->
+          <ng-container *ngIf="tabla[d] && tabla[d][h] as celda; else vacio">
+
+            <div class="p-2 rounded text-center"
+                 [ngClass]="celda.claseEstado">
+
+              <div class="fw-semibold">{{ celda.modulo }}</div>
+
+              <div *ngIf="celda.aula" class="text-muted small">
+                Aula: {{ celda.aula }}
+              </div>
+
+              <div *ngIf="celda.observaciones" class="text-info small">
+                {{ celda.observaciones }}
+              </div>
+
+            </div>
+
+          </ng-container>
+
+          <!-- Si NO hay clase -->
+          <ng-template #vacio>
+            <span class="text-muted">—</span>
+          </ng-template>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

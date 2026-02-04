@@ -1,0 +1,29 @@
+<div class="mb-3">
+  <input class="form-control" placeholder="Buscar..." [(ngModel)]="filtro" (input)="buscar()">
+</div>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let a of alumnosFiltrados">
+      <td>{{ a.nombre }} {{ a.apellidos }}</td>
+      <td>{{ a.email }}</td>
+      <td class="text-end">
+        <button
+          class="btn btn-primary btn-sm"
+          (click)="consultar(a.id)"
+          [disabled]="esAlumno"
+          title="{{ esAlumno ? 'No autorizado' : 'Consultar' }}"
+        >
+          Consultar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

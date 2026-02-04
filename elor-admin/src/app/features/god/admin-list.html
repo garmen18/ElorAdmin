@@ -1,0 +1,39 @@
+<div class="container py-4">
+
+  <h2 class="mb-4">Administradores</h2>
+
+  <a class="btn btn-primary mb-3" routerLink="/god/admins/nuevo">
+    Crear Administrador
+  </a>
+
+  <table class="table table-striped table-bordered shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th style="width: 160px;">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let admin of admins">
+        <td>{{ admin.id }}</td>
+        <td>{{ admin.nombre }} {{ admin.apellidos }}</td>
+        <td>{{ admin.email }}</td>
+        <td>
+          <a class="btn btn-warning btn-sm me-2"
+             [routerLink]="['/god/admins/editar', admin.id]">
+            Editar
+          </a>
+
+          <button class="btn btn-danger btn-sm"
+                  (click)="borrar(admin.id)">
+            Borrar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

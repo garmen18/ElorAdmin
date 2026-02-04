@@ -1,0 +1,214 @@
+<div class="container py-4">
+
+  <!-- LOADER GLOBAL -->
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+    <p class="mt-3 text-muted">Cargando datos...</p>
+  </div>
+
+  <!-- CONTENIDO -->
+  <ng-container *ngIf="!cargando">
+
+    <!-- INFORMACIÓN PERSONAL COMPLETA -->
+    <h1 class="display-4 fw-bold mb-4 text-primary">
+      Hola, {{ user?.nombre }}
+    </h1>
+
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title mb-3">Información personal</h4>
+
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>ID:</strong> {{ user?.id }}</p>
+            <p><strong>Email:</strong> {{ user?.email }}</p>
+            <p><strong>Username:</strong> {{ user?.username }}</p>
+            <p><strong>Password:</strong> {{ user?.password }}</p>
+            <p><strong>Nombre:</strong> {{ user?.nombre }}</p>
+            <p><strong>Apellidos:</strong> {{ user?.apellidos }}</p>
+            <p><strong>DNI:</strong> {{ user?.dni }}</p>
+          </div>
+
+          <div class="col-md-6">
+            <p><strong>Dirección:</strong> {{ user?.direccion }}</p>
+            <p><strong>Teléfono 1:</strong> {{ user?.telefono1 }}</p>
+            <p><strong>Teléfono 2:</strong> {{ user?.telefono2 }}</p>
+            <p><strong>Tipo de usuario:</strong>
+              {{ tipo === 1 ? 'God' :
+                 tipo === 2 ? 'Administrador' :
+                 tipo === 3 ? 'Profesor' : 'Alumno' }}
+            </p>
+
+            <p *ngIf="user?.argazkia_url">
+              <strong>Foto:</strong><br>
+              <img [src]="user.argazkia_url"
+                   alt="Foto usuario"
+                   class="img-thumbnail"
+                   style="max-width: 150px;">
+            </p>
+
+            <p><strong>Creado:</strong> {{ user?.created_at }}</p>
+            <p><strong>Actualizado:</strong> {{ user?.updated_at }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GOD + ADMIN -->
+    <div *ngIf="tipo === 1 || tipo === 2">
+
+      <!-- STATS -->
+      <div class="row text-center mb-4" *ngIf="stats">
+        <div class="col-md-4">
+          <div class="card p-3 shadow-sm">
+            <h3>{{ stats.alumnos }}</h3>
+            <p>Alumnos</p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card p-3 shadow-sm">
+            <h3>{{ stats.profesores }}</h3>
+            <p>Profesores</p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card p-3 shadow-sm">
+            <h3>{{ stats.reunionesHoy }}</h3>
+            <p>Reuniones hoy</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUSCADOR -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5>Buscar usuarios</h5>
+          <input class="form-control mb-3"
+                 [(ngModel)]="textoBusqueda"
+                 (input)="buscar()"
+                 placeholder="Buscar por nombre, apellidos o email">
+
+          <ul class="list-group" *ngIf="buscados.length > 0">
+            <li class="list-group-item" *ngFor="let u of buscados">
+              {{ u.nombre }} {{ u.apellidos }} — {{ u.email }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- TABLA ADMINISTRADORES (solo GOD y Admin) -->
+      <div *ngIf="tipo === 1">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h4>Administradores</h4>
+          <a class="btn btn-primary" routerLink="/god/admins/nuevo">Añadir</a>
+        </div>
+
+        <table class="table table-striped mb-4">
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th style="width: 180px;">Acciones</th>
+          </tr>
+          <tr *ngFor="let a of admins">
+            <td>{{ a.nombre }}</td>
+            <td>{{ a.email }}</td>
+            <td>
+              <a class="btn btn-warning btn-sm me-2"
+                 [routerLink]="['/god/admins/editar', a.id]">Editar</a>
+              <button class="btn btn-danger btn-sm"
+                      (click)="borrarAdmin(a.id)">Borrar</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- TABLA PROFESORES -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4>Profesores</h4>
+        <a class="btn btn-primary" routerLink="/god/profesores/nuevo">Añadir</a>
+      </div>
+
+      <table class="table table-striped mb-4">
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th style="width: 180px;">Acciones</th>
+        </tr>
+        <tr *ngFor="let p of profesores">
+          <td>{{ p.nombre }} {{ p.apellidos }}</td>
+          <td>{{ p.email }}</td>
+          <td>
+            <a class="btn btn-warning btn-sm me-2"
+               [routerLink]="['/god/profesores', p.id]">Editar</a>
+            <button class="btn btn-danger btn-sm"
+                    (click)="borrarProfesor(p.id)">Borrar</button>
+          </td>
+        </tr>
+      </table>
+
+      <!-- TABLA ALUMNOS -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4>Alumnos</h4>
+        <a class="btn btn-primary" routerLink="/god/alumnos/nuevo">Añadir</a>
+      </div>
+
+      <table class="table table-striped mb-4">
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th style="width: 180px;">Acciones</th>
+        </tr>
+        <tr *ngFor="let al of alumnos">
+          <td>{{ al.nombre }} {{ al.apellidos }}</td>
+          <td>{{ al.email }}</td>
+          <td>
+            <a class="btn btn-warning btn-sm me-2"
+               [routerLink]="['/god/alumnos', al.id]">Editar</a>
+            <button class="btn btn-danger btn-sm"
+                    (click)="borrarAlumno(al.id)">Borrar</button>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+    <!-- PROFESOR -->
+    <div *ngIf="tipo === 3">
+      <h2>Bienvenido, {{ user?.nombre }}</h2>
+
+      <h4 class="mt-4">Mi horario (resumen)</h4>
+      <app-mini-horario [datos]="miniHorario"></app-mini-horario>
+
+      <a routerLink="/prof/horario" class="btn btn-primary mt-2">Ver horario completo</a>
+
+      <h4 class="mt-4">Mis reuniones</h4>
+      <app-mini-reuniones [datos]="proximasReuniones"></app-mini-reuniones>
+
+      <a routerLink="/prof/reuniones" class="btn btn-secondary mt-2">Ver todas las reuniones</a>
+
+      <h4 class="mt-4">Consultas</h4>
+      <a routerLink="/prof/alumnos" class="btn btn-info me-2">Buscar alumnos</a>
+      <a routerLink="/prof/profesores" class="btn btn-info">Buscar profesores</a>
+    </div>
+
+    <!-- ALUMNO -->
+    <div *ngIf="tipo === 4">
+      <h2>Bienvenido, {{ user?.nombre }}</h2>
+
+      <h4 class="mt-4">Mi horario (resumen)</h4>
+      <app-mini-horario [datos]="miniHorario"></app-mini-horario>
+
+      <a routerLink="/alumno/horario" class="btn btn-primary mt-2">Ver horario completo</a>
+
+      <h4 class="mt-4">Mis reuniones</h4>
+      <app-mini-reuniones [datos]="proximasReuniones"></app-mini-reuniones>
+
+      <a routerLink="/alumno/reuniones" class="btn btn-secondary mt-2">Ver todas las reuniones</a>
+    </div>
+
+  </ng-container>
+
+</div>

@@ -1,0 +1,54 @@
+<div class="container py-4">
+
+  <h2 class="mb-4">Mi horario completo</h2>
+
+  <!-- Feedback de carga -->
+  <div *ngIf="cargando" class="text-muted mb-3">Cargando...</div>
+
+  <table class="table table-bordered text-center align-middle" *ngIf="!cargando">
+    <thead class="table-dark">
+      <tr>
+        <th style="width: 80px;">Hora</th>
+        <th *ngFor="let d of dias">{{ d }}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let h of horas">
+        <td class="fw-bold">{{ h }}</td>
+
+        <!-- Celda del horario -->
+        <td *ngFor="let d of dias">
+
+          <!-- Si hay reunión en esa celda -->
+          <ng-container *ngIf="tabla?.[d]?.[h] as celda; else vacio">
+
+            <div class="p-2 rounded text-center"
+                 [ngClass]="celda.claseEstado">
+
+              <div class="fw-semibold">{{ celda.modulo }}</div>
+
+              <div *ngIf="celda.aula" class="small">
+                Aula: {{ celda.aula }}
+              </div>
+
+              <div *ngIf="celda.observaciones" class="small">
+                {{ celda.observaciones }}
+              </div>
+
+            </div>
+
+          </ng-container>
+
+          <!-- Celda vacía -->
+          <ng-template #vacio>
+            <div class="p-2 text-muted">—</div>
+          </ng-template>
+
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+
+</div>

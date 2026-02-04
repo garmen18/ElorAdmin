@@ -1,0 +1,15 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Mis reuniones</h2>
+
+  <div *ngIf="cargando" class="alert alert-info">
+    Cargando reuniones...
+  </div>
+
+  <div *ngIf="!cargando">
+    <app-mini-reuniones [datos]="reuniones"></app-mini-reuniones>
+  </div>
+
+  <div *ngIf="!cargando && reuniones.length === 0" class="alert alert-secondary mt-3">
+    No tienes reuniones programadas.
+  </div>
+</div>

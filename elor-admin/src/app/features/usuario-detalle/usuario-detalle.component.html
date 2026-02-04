@@ -1,0 +1,133 @@
+<div class="container py-3">
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-3">Cargando datos...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- CONTENIDO -->
+  <div *ngIf="!loading && !error">
+
+    <!-- DATOS DEL USUARIO -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h3 class="mb-0">
+          {{ usuario?.nombre }} {{ usuario?.apellidos }}
+        </h3>
+        <p class="text-muted mb-1">{{ usuario?.email }}</p>
+        <span class="badge bg-primary" *ngIf="usuario?.tipo_id === 3">Profesor</span>
+        <span class="badge bg-success" *ngIf="usuario?.tipo_id === 4">Alumno</span>
+      </div>
+    </div>
+
+    <!-- HORARIO -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h4 class="mb-3">Horario</h4>
+
+        <div *ngIf="tablaHorario; else noHorario">
+          <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Hora</th>
+                <th *ngFor="let dia of ['LUNES','MARTES','MIERCOLES','JUEVES','VIERNES']">
+                  {{ dia }}
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let h of [1,2,3,4,5,6]">
+                <th class="table-light">{{ h }}</th>
+
+                <td *ngFor="let d of ['LUNES','MARTES','MIERCOLES','JUEVES','VIERNES']">
+
+                  <ng-container *ngIf="tablaHorario[d][h] as item; else vacio">
+
+                    <div class="p-2 rounded text-center"
+                         [ngClass]="item.claseEstado">
+
+                      <strong>{{ item.modulo }}</strong><br>
+
+                      <small *ngIf="item.aula" class="small">
+                        Aula: {{ item.aula }}
+                      </small>
+
+                      <small *ngIf="item.observaciones" class="small">
+                        {{ item.observaciones }}
+                      </small>
+
+                    </div>
+
+                  </ng-container>
+
+                  <ng-template #vacio>
+                    <span class="text-muted">—</span>
+                  </ng-template>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #noHorario>
+          <p class="text-muted">No hay horario disponible.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- REUNIONES -->
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="mb-3">Reuniones</h4>
+
+        <div *ngIf="reuniones.length > 0; else noReuniones">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let r of reuniones">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <strong>{{ r.asunto }}</strong><br>
+                  <small class="text-muted">
+                    {{ r.fecha | date:'short' }}
+                  </small>
+                </div>
+
+                <div class="text-end">
+                  <span class="badge px-3 py-2 text-capitalize"
+                        [ngClass]="{
+                          'bg-warning text-dark': r.estado === 'pendiente',
+                          'bg-success text-white': r.estado === 'aceptada',
+                          'bg-danger text-white': r.estado === 'conflicto'
+                        }">
+                    {{ r.estado }}
+                  </span>
+
+                  <div class="small text-muted mt-1">
+                    <ng-container *ngIf="r.profesor">
+                      Profesor: {{ r.profesor }}
+                    </ng-container>
+                    <ng-container *ngIf="r.alumno">
+                      Alumno: {{ r.alumno }}
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <ng-template #noReuniones>
+          <p class="text-muted">No hay reuniones registradas.</p>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+</div>

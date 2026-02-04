@@ -1,0 +1,95 @@
+<div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+
+      <img 
+        src="assets/img/logo.jpg"
+        alt="Elorrieta-Erreka Mari"
+        style="height: 65px; cursor: pointer;"
+        (click)="router.navigate(['/home'])"
+      >
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+
+          <ng-container *ngIf="tipo$ | async as tipo">
+
+            <!-- GOD -->
+            <li class="nav-item" *ngIf="tipo === 1">
+              <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 1">
+              <a class="nav-link" routerLink="/prof/alumnos" routerLinkActive="active">Buscar alumnos</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 1">
+              <a class="nav-link" routerLink="/prof/profesores" routerLinkActive="active">Buscar profesores</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 1">
+              <a class="nav-link" routerLink="/centros" routerLinkActive="active">Centros</a>
+            </li>
+
+            <!-- ADMIN -->
+            <li class="nav-item" *ngIf="tipo === 2">
+              <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 2">
+              <a class="nav-link" routerLink="/prof/alumnos" routerLinkActive="active">Buscar alumnos</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 2">
+              <a class="nav-link" routerLink="/prof/profesores" routerLinkActive="active">Buscar profesores</a>
+            <li class="nav-item" *ngIf="tipo === 2">
+              <a class="nav-link" routerLink="/centros" routerLinkActive="active">Centros</a>
+            </li>
+
+            <!-- PROFESOR -->
+            <li class="nav-item" *ngIf="tipo === 3">
+              <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 3">
+              <a class="nav-link" routerLink="/prof/horario" routerLinkActive="active">Mi horario</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 3">
+              <a class="nav-link" routerLink="/prof/reuniones" routerLinkActive="active">Mis reuniones</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 3">
+              <a class="nav-link" routerLink="/prof/alumnos" routerLinkActive="active">Buscar alumnos</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 3">
+              <a class="nav-link" routerLink="/prof/profesores" routerLinkActive="active">Buscar profesores</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 3">
+              <a class="nav-link" routerLink="/centros" routerLinkActive="active">Centros</a>
+            </li>
+
+            <!-- ALUMNO -->
+            <li class="nav-item" *ngIf="tipo === 4">
+              <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 4">
+              <a class="nav-link" routerLink="/alumno/horario" routerLinkActive="active">Mi horario</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 4">
+              <a class="nav-link" routerLink="/alumno/reuniones" routerLinkActive="active">Mis reuniones</a>
+            </li>
+            <li class="nav-item" *ngIf="tipo === 4">
+              <a class="nav-link" routerLink="/centros" routerLinkActive="active">Centros</a>
+            </li>
+
+          </ng-container>
+
+        </ul>
+
+        <button class="btn btn-outline-light" (click)="logout()">
+          Cerrar sesión
+        </button>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>
